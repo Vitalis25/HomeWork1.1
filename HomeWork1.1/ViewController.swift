@@ -5,6 +5,7 @@
 //  Created by Vitally Ochnev on 05.12.2021.
 //
 
+import AVFoundation
 import UIKit
 
 class ViewController: UIViewController {
@@ -43,5 +44,17 @@ class ViewController: UIViewController {
             view.backgroundColor = .black
     
         }
+        updateView()
+    }
+}
+
+fileprivate func updateView () {
+    let device = AVCaptureDevice.default(for: AVMediaType.video)
+    if ((device?.hasTorch) != nil) {
+        do {
+            try device?.lockForConfiguration()
+            device?.torchMode = device?.torchMode == AVCaptureDevice.TorchMode.on ? .off : .on
+            device?.unlockForConfiguration()
+        } catch {print(error)}
     }
 }
